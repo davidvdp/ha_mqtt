@@ -2,3 +2,5 @@
 /dvdp.ha_mqtt.egg-info
 venv
 __pycache__
+dist
+.gitignore
