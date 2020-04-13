@@ -9,12 +9,17 @@ with open(this_dir / 'requirements.txt') as file:
 with open(this_dir / 'README.md') as file:
     long_description = file.read()
 
+version = '0.2.1'
+package_name = 'ha_mqtt'
+top_ns = 'dvdp'
+
 setup(
-    name='dvdp.ha_mqtt',
-    version='0.2.0',
-    packages=['dvdp.ha_mqtt'],
-    download_url='https://github.com/davidvdp/ha_mqtt/archive/v0.2.0.tar.gz',
-    url='https://github.com/davidvdp/ha_mqtt',
+    name=f'{top_ns}.{package_name}',
+    version=version,
+    packages=[f'{top_ns}.{package_name}'],
+    download_url=f'https://github.com/davidvdp/{package_name}/archive/v'
+                 f'{version}.tar.gz',
+    url=f'https://github.com/davidvdp/{package_name}',
     author='David van der Pol',
     author_email='david@davidvanderpol.com',
     license='MIT',
