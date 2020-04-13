@@ -5,4 +5,4 @@ Types of devices supported:
 1. Light
 
 ## Install
-`$ pip install dvdp.ha_mqtt`
+`$ pip install dvdp.ha-mqtt`

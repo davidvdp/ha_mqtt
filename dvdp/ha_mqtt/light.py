@@ -14,11 +14,21 @@ class HAMQTTLight(Device):
     def __init__(
         self,
         name: str,
-        client: MQTTClient,
+        mqtt_client: MQTTClient,
         state_change_callback,
     ):
+        """
+        Create Home Assistant MQTT Light.
+
+        :param name: The name that is used for its MQTT nodes.
+        :param mqtt_client: MQTTClient object used for communication.
+        :param state_change_callback: Callback function called when a state
+        change has been requested. Function should have 1 argument (state:
+        str) either 'ON' or 'OFF'
+        """
+        logging.info(f'Setting up MQTT Light {name}...')
         super().__init__(name)
-        self.__client = client
+        self.__client = mqtt_client
         self.__state_change_callback = state_change_callback
         self.__name = name
 
@@ -95,6 +105,7 @@ class HAMQTTLight(Device):
         self.__subscribe()
 
         self.__started = True
+        logging.info(f'Started MQTT light {self.__name}')
         await self.__fetch_messages()
 
     def stop(self):

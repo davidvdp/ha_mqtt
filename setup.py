@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 from pathlib import Path
 
 this_dir = Path(__file__).parent
@@ -13,7 +13,7 @@ setup(
     name='dvdp.ha_mqtt',
     version='0.2.0',
     packages=['dvdp.ha_mqtt'],
-    download_url='https://github.com/davidvdp/ha_mqtt/archive/v0.1.0.tar.gz',
+    download_url='https://github.com/davidvdp/ha_mqtt/archive/v0.2.0.tar.gz',
     url='https://github.com/davidvdp/ha_mqtt',
     author='David van der Pol',
     author_email='david@davidvanderpol.com',
