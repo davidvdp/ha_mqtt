@@ -9,7 +9,9 @@ with open(this_dir / 'requirements.txt') as file:
 with open(this_dir / 'README.md') as file:
     long_description = file.read()
 
-version = '0.2.1'
+with open(this_dir / 'VERSION') as file:
+    version = file.read()
+
 package_name = 'ha_mqtt'
 top_ns = 'dvdp'
 
