@@ -63,7 +63,11 @@ class HAMQTTLight(Device):
     async def __fetch_messages(self):
         while self.__started:
             value = await self.__client.get(
-                self.__command_topic)
+                self.__command_topic,
+            )
+            if value is None:  # the previous await stopped prematurely
+                self.stop()
+                break
             self.__handle_command(value)
 
     def __handle_command(self, command):

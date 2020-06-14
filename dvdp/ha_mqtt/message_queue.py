@@ -7,6 +7,7 @@ class MessageQueue:
     def __init__(self, max_age=timedelta(seconds=10)):
         self.__max_age = max_age
         self.__queue = list()
+        self.__started = True
 
     def __len__(self):
         return len(self.__queue)
@@ -14,9 +15,13 @@ class MessageQueue:
     def add(self, topic, value):
         self.__queue.append([topic, value, datetime.now()])
 
+    def stop_get(self):
+        self.__started = False
+
     async def get(self, topic):
         values = []
-        while not values:
+        self.__started = True
+        while not values and self.__started:
             now = datetime.now()
             self.__queue = [
                 [topic2, value, timestamp]

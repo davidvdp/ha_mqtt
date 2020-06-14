@@ -15,11 +15,11 @@ class MQTTClient:
             password: Optional[str] = None,
     ):
         self.__client = self.__create_client(
-            broker_ip,
             client_name,
             username,
             password,
         )
+        self.__connect(broker_ip)
         self.__message_queue = MessageQueue()
         self.__on_connect_callbacks = []
 
@@ -49,9 +49,23 @@ class MQTTClient:
         self.__message_queue.add(msg.topic, msg.payload)
         logging.debug('Queue size {}'.format(len(self.__message_queue)))
 
+    def __on_disconnect(self, client, userdata, rc):
+        logging.exception('Lost connection to MQTT broker.')
+        self.__message_queue.stop_get()
+        raise ConnectionError('Lost connection to MQTT broker.')
+
+    def __connect(self, broker_ip):
+        try:
+            self.__client.connect(broker_ip)
+            self.__client.loop_start()
+        except ConnectionRefusedError as ex:
+            logging.exception(
+                'Could not connect to broker. Did you provide the correct ip '
+                'as an argument?')
+            raise ex
+
     def __create_client(
             self,
-            broker_ip,
             client_name,
             username=None,
             password=None,
@@ -62,15 +76,6 @@ class MQTTClient:
         client.username_pw_set(username, password)
         client.on_connect = self.__on_connect
         client.on_message = self.__on_message
-
-        try:
-            client.connect(broker_ip)
-            client.loop_start()
-        except ConnectionRefusedError as ex:
-            logging.exception(
-                'Could not connect to broker. Did you provide the correct ip '
-                'as an argument?')
-            raise ex
-
+        client.on_disconnect = self.__on_disconnect
         return client
 
